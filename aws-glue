@@ -1,0 +1,17 @@
+https://docs.aws.amazon.com/glue/latest/dg/troubleshooting-glue.html
+
+When a crawler fails, gather the following information:
+- Crawler name
+- Logs from crawler runs are located in CloudWatch Logs under /aws-glue/crawlers.
+
+When a test connection fails, gather the following information:
+- Connection name
+- Connection ID
+- JDBC connection string in the form jdbc:protocol://host:port/database-name.
+- Logs from test connections are located in CloudWatch Logs under /aws-glue/testconnection.
+
+When a job fails, gather the following information:
+- Job name
+- Job run ID in the form jr_xxxxx.
+- Logs from job runs are located in CloudWatch Logs under /aws-glue/jobs.
+
