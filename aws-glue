@@ -15,3 +15,5 @@ When a job fails, gather the following information:
 - Job run ID in the form jr_xxxxx.
 - Logs from job runs are located in CloudWatch Logs under /aws-glue/jobs.
 
+sudo docker run -it -p 8888:8888 -p 4040:4040 --name glue_jupyter1 amazon/aws-glue-libs:glue_libs_4.0.0_image_01 /home/glue_user/jupyter/jupyter_start.sh
+sudo docker run -it -p 8888:8888 -p 4040:4040 --name glue_jupyter1 amazon/aws-glue-libs:glue_libs_1.0.0_image_01 /home/jupyter/jupyter_start.sh
