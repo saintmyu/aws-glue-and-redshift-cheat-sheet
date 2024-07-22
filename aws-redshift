@@ -1,0 +1,71 @@
+Troubleshooting queries
+https://docs.aws.amazon.com/redshift/latest/dg/queries-troubleshooting.html
+
+Client cannot connect to server
+If you are using SSL or server certificates, first remove this complexity while you troubleshoot the connection issue. 
+https://docs.aws.amazon.com/redshift/latest/mgmt/connecting-ssl-support.html
+
+Connection is refused
+Generally, when you receive an error message indicating that there is a failure to establish a connection, it means that there is an issue with the permission to access the cluster.
+https://docs.aws.amazon.com/redshift/latest/mgmt/connecting-refusal-failure-issues.html
+
+Connection to the database is dropped
+Reduce the size of maximum transmission unit (MTU).
+https://docs.aws.amazon.com/redshift/latest/mgmt/connecting-drop-issues.html
+
+Connection to the database times out
+This effect happens when idle connections are terminated by an intermediate network component. 
+https://docs.aws.amazon.com/redshift/latest/mgmt/connecting-firewall-guidance.html
+
+Client-side out-of-memory error occurs with ODBC
+If your client application uses an ODBC connection and your query creates a result set that is too large to fit in memory, you can stream the result set to your client application by using a cursor.
+https://docs.aws.amazon.com/redshift/latest/dg/declare.html#declare-performance
+
+Client-side out-of-memory error occurs with JDBC
+- View the STV_LOCKS and STL_TR_CONFLICT system tables to find conflicts involving updates to more than one table.
+- Use the PG_CANCEL_BACKEND function to cancel one or more conflicting queries.
+- Use the PG_TERMINATE_BACKEND function to terminate a session, which forces any currently running transactions in the terminated session to release all locks and roll back the transaction.
+https://docs.aws.amazon.com/redshift/latest/dg/c_Concurrent_writes.html
+
+Tables are not optimized
+Set the sort key, distribution style, and compression encoding of the tables to take full advantage of parallel processing.
+https://docs.aws.amazon.com/redshift/latest/dg/t_Creating_tables.html
+
+Query is writing to disk
+Your queries might be writing to disk for at least part of the query execution.
+https://docs.aws.amazon.com/redshift/latest/dg/query-performance-improvement-opportunities.html
+
+Query must wait for other queries to finish
+You might be able to improve overall system performance by creating query queues and assigning different types of queries to the appropriate queues.
+https://docs.aws.amazon.com/redshift/latest/dg/cm-c-implementing-workload-management.html
+
+Queries are not optimized
+Analyze the explain plan to find opportunities for rewriting queries or optimizing the database
+https://docs.aws.amazon.com/redshift/latest/dg/c-the-query-plan.html
+
+Query needs more memory to run
+If a specific query needs more memory, you can increase the available memory by increasing the wlm_query_slot_count.
+https://docs.aws.amazon.com/redshift/latest/dg/r_wlm_query_slot_count.html
+
+Database requires a VACUUM command to be run
+Run the VACUUM command whenever you add, delete, or modify a large number of rows, unless you load your data in sort key order. 
+
+Load fails
+- Data Source is in a different AWS Region
+- COPY command fails https://docs.aws.amazon.com/redshift/latest/dg/r_STL_LOAD_ERRORS.html
+
+Load takes too long
+- COPY loads data from a single file
+  Split your load data into multiple files.
+  The number of files should be a multiple of the number of slices in your cluster, and the files should be about equal size, between 1 MB and 1 GB after compression.
+  https://docs.aws.amazon.com/redshift/latest/dg/c_designing-queries-best-practices.html
+- Load operation uses multiple COPY commands
+  If you use multiple concurrent COPY commands to load one table from multiple files, Amazon Redshift is forced to perform a serialized load, which is much slower. In this case, use a single COPY command.
+
+Load data is incorrect
+- Wrong files are loaded
+  Using an object prefix to specify data files can cause unwanted files to be read. Instead, use a manifest file to specify exactly which files to load. 
+  https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-s3.html#copy-manifest-file
+  https://docs.aws.amazon.com/redshift/latest/dg/r_COPY_command_examples.html#copy-command-examples-manifest
+
+
